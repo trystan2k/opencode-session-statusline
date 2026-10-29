@@ -1,0 +1,59 @@
+{
+  "name": "opencode-session-statusline",
+  "version": "0.1.0",
+  "description": "Session status row for the OpenCode v2 TUI: model, provider and effort, an 11-cell context gauge with the context % and the tokens behind it, per-session in/out token totals, a token speed meter and the session duration.",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "Trystan2k",
+    "url": "https://github.com/trystan2k"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trystan2k/opencode-session-statusline.git"
+  },
+  "bugs": {
+    "url": "https://github.com/trystan2k/opencode-session-statusline/issues"
+  },
+  "keywords": [
+    "opencode",
+    "plugin",
+    "statusline",
+    "tui"
+  ],
+  "files": [
+    "src",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./tui": "./src/tui.tsx"
+  },
+  "scripts": {
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@opencode/client": "^2.2.1",
+    "@opencode/plugin": "^2.2.1",
+    "@opentui/core": "^0.7.0",
+    "@opentui/solid": "^0.7.0",
+    "solid-js": "^1.9.0",
+    "typescript": "^7.0.2"
+  },
+  "peerDependencies": {
+    "@opentui/core": "*",
+    "@opentui/solid": "*",
+    "solid-js": ">=1.9.0"
+  },
+  "peerDependenciesMeta": {
+    "@opentui/core": {
+      "optional": true
+    },
+    "@opentui/solid": {
+      "optional": true
+    },
+    "solid-js": {
+      "optional": true
+    }
+  }
+}
