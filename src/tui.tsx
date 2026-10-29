@@ -1,6 +1,6 @@
-/** @jsxImportSource @opentui/solid */
-import { Plugin } from "@opencode/plugin/tui"
-import { For, Show, createMemo, createSignal } from "solid-js"
+import { Plugin } from "opentui:runtime-module:%40opencode%2Fplugin%2Ftui"
+import { For, Show, createMemo, createSignal } from "opentui:runtime-module:solid-js"
+import { jsx } from "opentui:runtime-module:%40opentui%2Fsolid%2Fjsx-runtime"
 
 /**
  * opencode-session-statusline
@@ -855,15 +855,46 @@ export default Plugin.define({
         return sessionID ? build(sessionID) : undefined
       })
 
-      return (
-        <Show when={view()}>
-          <box flexDirection="row" flexShrink={0} paddingLeft={inFooter ? 1 : 2}>
-            <text wrapMode="none">
-              <For each={view()!.parts}>{(part) => <span style={{ fg: color(part) }}>{part.text}</span>}</For>
-            </text>
-          </box>
-        </Show>
-      )
+      // No JSX syntax: OpenCode skips its Solid JSX transform for files under
+      // a `node_modules` tree (where published packages are installed), so the
+      // row is built with the runtime's `jsx` directly. The getters mirror
+      // exactly what that transform would generate from the JSX above — they
+      // are what keeps the line reactive.
+      return jsx(Show, {
+        get when() {
+          return view()
+        },
+        get children() {
+          return jsx("box", {
+            flexDirection: "row",
+            flexShrink: 0,
+            get paddingLeft() {
+              return inFooter ? 1 : 2
+            },
+            get children() {
+              return jsx("text", {
+                wrapMode: "none",
+                get children() {
+                  return jsx(For, {
+                    get each() {
+                      return view()!.parts
+                    },
+                    children: (part: Part) =>
+                      jsx("span", {
+                        get style() {
+                          return { fg: color(part) }
+                        },
+                        get children() {
+                          return part.text
+                        },
+                      }),
+                  })
+                },
+              })
+            },
+          })
+        },
+      })
     }
 
     if (placement === "footer") {

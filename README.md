@@ -108,12 +108,19 @@ from the message records.
 
 ## Known issues
 
-- OpenCode's loader skips its Solid JSX transform for plugin files installed
-  under a `node_modules` path, which affects npm/git-installed TUI plugins on
-  some versions (upstream: [anomalyco/opencode#33884](https://github.com/anomalyco/opencode/issues/33884)).
-  If the row silently fails to appear after installing from npm, load the
-  package from a local path instead (`"plugins": ["/absolute/path/to/a/checkout"]`)
-  and please open an issue here with your `opencode --version`.
+- OpenCode's TUI skips its Solid JSX transform for files under a `node_modules`
+  tree — exactly where npm/git-installed packages live — so raw `.tsx` TUI
+  entries fail to load from an install (upstream:
+  [anomalyco/opencode#33884](https://github.com/anomalyco/opencode/issues/33884)).
+  This package therefore ships no JSX syntax: the TUI part imports the TUI SDK,
+  Solid and the OpenTUI JSX runtime through the host's virtual runtime modules
+  and builds the row with `jsx()` directly, so it renders no matter where it is
+  installed from. Verified on OpenCode 2.2.1 installed via
+  `opencode plugin add` from GitHub.
+- Keep exactly one copy of the plugin. Loading the same plugin id from two
+  sources (for example a leftover directory in `~/.config/opencode/plugins/`
+  alongside the configured package) makes one of them show up as
+  "Plugin failed" in `/plugins`.
 
 ## Development
 

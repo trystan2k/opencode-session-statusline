@@ -16,3 +16,8 @@ Initial release.
   `@rashidrazak/opencode-status-line`'s rate maths, fed by the host's
   delta/step events; a session the process never watched (a resume, a
   restart) rebuilds its settled figure from the message records.
+- Packaging note: the TUI part contains no JSX syntax — it imports the host's
+  TUI SDK, Solid and OpenTUI JSX runtime through OpenCode's virtual runtime
+  modules, because OpenCode skips its Solid JSX transform for files installed
+  under a `node_modules` tree (anomalyco/opencode#33884). This makes the
+  package load identically from npm, from GitHub, or from a local checkout.
